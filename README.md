@@ -21,14 +21,15 @@ on:
       - main
 
 permissions:
-  contents: read
+  actions: read
+  contents: write
   id-token: write
   packages: write
   security-events: write
 
 jobs:
   image:
-    uses: vexxhost/github-actions/.github/workflows/publish-image.yml@main
+    uses: vexxhost/github-actions/.github/workflows/image.yml@main
     with:
       image-ref: ghcr.io/${{ github.repository_owner }}/ubuntu
       push: ${{ github.event_name == 'push' }}
