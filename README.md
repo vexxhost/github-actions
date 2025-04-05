@@ -11,7 +11,7 @@ This reusable workflow can help with building images in pull requests, publishin
 them post merge and scanning them for vulnerabilities.
 
 ```yaml
-name: build
+name: ci
 
 on:
   workflow_dispatch:
