@@ -5,53 +5,8 @@ which are used within our GitHub organization.
 
 ## Usage
 
-In order to use these different actions in repositories, you can reference them in your
-workflows, you can use the following examples:
+The documentation for each action is available in the folder of the action itself,
+however here is a quick overview of each action:
 
-### `build-docker-image`
-
-In order to validate that an image builds correctly, you can use the `build-docker-image` action in pull requests.
-
-```yaml
-name: build
-
-on:
-  pull_request:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: vexxhost/github-actions/build-docker-image@main
-```
-
-In addition, if you'd like to push the image to GitHub container registry, you can use the `push` input in another workflow.
-
-```yaml
-name: publish
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
-jobs:
-  image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-      security-events: write
-    steps:
-      - uses: vexxhost/github-actions/build-docker-image@main
-        id: build
-        with:
-          push: true
-    outputs:
-      image_name: ${{ steps.build.outputs.image-name }}
-```
+- `build-docker-image`: Build a Docker image, scan it for vulnerabilities, and
+  optionally push it to the GitHub container registry.
