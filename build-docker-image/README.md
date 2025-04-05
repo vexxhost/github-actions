@@ -18,7 +18,8 @@ jobs:
       - uses: vexxhost/github-actions/build-docker-image@main
 ```
 
-In addition, if you'd like to push the image to GitHub container registry, you can use the `push` input in another workflow.
+In addition, if you'd like to push the image to GitHub container registry, you can use the reusable
+workflow which can also upload the SBOM report as an artifact.
 
 ```yaml
 name: publish
@@ -31,18 +32,5 @@ on:
 
 jobs:
   image:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-      security-events: write
-    steps:
-      - uses: vexxhost/github-actions/build-docker-image@main
-        id: build
-        with:
-          push: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-    outputs:
-      image_name: ${{ steps.build.outputs.image-name }}
+    uses: vexxhost/github-actions/.github/workflows/publish-image.yml@main
 ```
