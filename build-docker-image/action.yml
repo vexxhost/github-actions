@@ -2,6 +2,9 @@ name: build-docker-image
 description: Build a Docker image and run security scans
 
 inputs:
+  token:
+    description: The GitHub token to use for authentication
+    required: false
   push:
     description: Push the image to the registry
     required: false
@@ -25,7 +28,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.token }}
     - uses: depot/build-push-action@636daae76684e38c301daa0c5eca1c095b24e780 # v1.14.0
       id: build
       with:

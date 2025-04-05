@@ -42,6 +42,7 @@ jobs:
         id: build
         with:
           push: true
+          token: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       image_name: ${{ steps.build.outputs.image-name }}
 ```
