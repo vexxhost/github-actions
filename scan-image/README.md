@@ -17,4 +17,6 @@ jobs:
       security-events: write
     steps:
       - uses: vexxhost/github-actions/scan-image@main
+        with:
+          image-ref: ghcr.io/vexxhost/ubuntu:latest
 ```

@@ -2,7 +2,7 @@ name: scan-image
 description: Scan a Docker image for vulnerabilities using Trivy
 
 inputs:
-  image:
+  image-ref:
     description: The Docker image to scan
     required: true
   fail-on-vulnerability:
@@ -15,7 +15,7 @@ runs:
   steps:
     - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30.0
       with:
-        image-ref: ${{ inputs.image }}
+        image-ref: ${{ inputs.image-ref }}
         exit-code: ${{ inputs.fail-on-vulnerability == 'true' && '1' || '0' }}
         ignore-unfixed: true
         format: sarif
