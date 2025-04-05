@@ -10,3 +10,4 @@ however here is a quick overview of each action:
 
 - `build-docker-image`: Build a Docker image, scan it for vulnerabilities, and
   optionally push it to the GitHub container registry.
+- `scan-image`: Scan a Docker image for vulnerabilities.
