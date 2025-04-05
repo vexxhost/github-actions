@@ -5,6 +5,9 @@ inputs:
   token:
     description: The GitHub token to use for authentication
     required: false
+  image-ref:
+    description: The Docker image to build
+    required: true
   push:
     description: Push the image to the registry
     required: false
@@ -17,7 +20,7 @@ runs:
     - uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
       id: meta
       with:
-        images: ghcr.io/${{ github.repository_owner }}/ubuntu
+        images: ${{ inputs.image-ref }}
         tags: |
           type=sha
           type=edge

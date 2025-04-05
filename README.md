@@ -5,9 +5,31 @@ which are used within our GitHub organization.
 
 ## Usage
 
-The documentation for each action is available in the folder of the action itself,
-however here is a quick overview of each action:
+### `image`
 
-- `build-docker-image`: Build a Docker image, scan it for vulnerabilities, and
-  optionally push it to the GitHub container registry.
-- `scan-image`: Scan a Docker image for vulnerabilities.
+This reusable workflow can help with building images in pull requests, publishing
+them post merge and scanning them for vulnerabilities.
+
+```yaml
+name: build
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+  security-events: write
+
+jobs:
+  image:
+    uses: vexxhost/github-actions/.github/workflows/publish-image.yml@main
+    with:
+      image-ref: ghcr.io/${{ github.repository_owner }}/ubuntu
+      push: ${{ github.event_name == 'push' }}
+```

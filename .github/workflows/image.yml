@@ -1,7 +1,15 @@
-name: publish-image
+name: image
 
 on:
   workflow_call:
+    inputs:
+      image-ref:
+        type: string
+        required: true
+      push:
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   build:
@@ -15,13 +23,15 @@ jobs:
       - uses: vexxhost/github-actions/build-docker-image@main
         id: build
         with:
-          push: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          image-ref: ${{ inputs.image-ref }}
+          push: ${{ inputs.push }}
     outputs:
       image_name: ${{ steps.build.outputs.image-name }}
 
   sbom:
     runs-on: ubuntu-latest
+    if: ${{ inputs.push == 'true' }}
     needs: build
     permissions:
       actions: read
