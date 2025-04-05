@@ -1,19 +1,43 @@
 name: build-docker-image
 description: Build a Docker image and run security scans
+
+inputs:
+  push:
+    description: Push the image to the registry
+    required: false
+    default: 'false'
+
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+    - uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5.7.0
+      id: meta
+      with:
+        images: ghcr.io/${{ github.repository_owner }}/ubuntu
+        tags: |
+          type=sha
+          type=edge
+          type=edge,suffix=-{{date 'X'}}
     - uses: depot/setup-action@b0b1ea4f69e92ebf5dea3f8713a1b0c37b2126a5 # v1.6.0
+    - uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+      if: ${{ inputs.push == 'true' }}
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     - uses: depot/build-push-action@636daae76684e38c301daa0c5eca1c095b24e780 # v1.14.0
       id: build
       with:
         context: .
         project: h8rjlfhzg5
         platforms: linux/amd64,linux/arm64
-        load: true
+        load: ${{ inputs.push == 'false' }}
+        push: ${{ inputs.push == 'true' }}
         sbom: true
         provenance: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
     - uses: winterjung/split@7f51d99e7cc1f147f6f99be75acf5e641930af88 # v2.1.0
       id: split
       with:
@@ -22,7 +46,7 @@ runs:
     - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30.0
       with:
         image-ref: ${{ steps.split.outputs._0 }}
-        exit-code: '1'
+        exit-code: ${{ inputs.push == 'true' && '1' || '0' }}
         ignore-unfixed: true
         format: sarif
         output: trivy-results.sarif
@@ -30,3 +54,8 @@ runs:
       if: always()
       with:
         sarif_file: trivy-results.sarif
+
+outputs:
+  image-name:
+    description: The name of the image built
+    value: ${{ steps.split.outputs._0 }}
