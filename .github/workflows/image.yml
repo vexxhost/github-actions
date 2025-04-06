@@ -6,6 +6,13 @@ on:
       image-ref:
         type: string
         required: true
+      tags:
+        type: string
+        required: false
+        default: |
+          type=sha
+          type=edge
+          type=edge,suffix=-{{date 'X'}}
       push:
         type: boolean
         required: false
@@ -25,6 +32,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           image-ref: ${{ inputs.image-ref }}
+          tags: ${{ inputs.tags }}
           push: ${{ inputs.push }}
     outputs:
       image_name: ${{ steps.build.outputs.image-name }}
