@@ -15,6 +15,9 @@ inputs:
       type=sha
       type=edge
       type=edge,suffix=-{{date 'X'}}
+  build-args:
+    description: Build arguments for the Docker image
+    required: false
   push:
     description: Push the image to the registry
     required: false
@@ -42,6 +45,7 @@ runs:
         context: .
         project: h8rjlfhzg5
         platforms: linux/amd64,linux/arm64
+        build-args: ${{ inputs.build-args }}
         load: ${{ inputs.push == 'false' }}
         push: ${{ inputs.push == 'true' }}
         sbom: true
