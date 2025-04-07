@@ -5,6 +5,10 @@ inputs:
   token:
     description: The GitHub token to use for authentication
     required: false
+  context:
+    description: The context for the Docker build
+    required: false
+    default: '.'
   image-ref:
     description: The Docker image to build
     required: true
@@ -42,8 +46,8 @@ runs:
     - uses: depot/build-push-action@636daae76684e38c301daa0c5eca1c095b24e780 # v1.14.0
       id: build
       with:
-        context: .
         project: h8rjlfhzg5
+        context: ${{ inputs.context }}
         platforms: linux/amd64,linux/arm64
         build-args: ${{ inputs.build-args }}
         load: ${{ inputs.push == 'false' }}

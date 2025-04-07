@@ -3,6 +3,10 @@ name: image
 on:
   workflow_call:
     inputs:
+      context:
+        type: string
+        required: false
+        default: '.'
       image-ref:
         type: string
         required: true
@@ -34,6 +38,7 @@ jobs:
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          context: ${{ inputs.context }}
           image-ref: ${{ inputs.image-ref }}
           tags: ${{ inputs.tags }}
           build-args: ${{ inputs.build-args }}
