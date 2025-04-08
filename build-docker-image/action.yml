@@ -64,7 +64,7 @@ runs:
     - uses: vexxhost/github-actions/scan-image@main
       with:
         image-ref: ${{ steps.split.outputs._0 }}
-        fail-on-vulnerability: ${{ inputs.push == 'true' && 'true' || 'false' }}
+        fail-on-vulnerability: ${{ inputs.push == 'true' && 'false' || 'true' }}
 
 outputs:
   image-name:
