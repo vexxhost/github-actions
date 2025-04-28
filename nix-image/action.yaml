@@ -48,4 +48,4 @@ outputs:
     value: ${{ steps.image-info.outputs.name }}
   image-ref:
     description: Image reference
-    value: ${{ steps.image-info.outputs.name }}:${{ steps.meta.outputs.tags }}
+    value: ${{ steps.image-info.outputs.tags }}
