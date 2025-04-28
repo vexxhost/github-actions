@@ -40,7 +40,7 @@ runs:
 outputs:
   image-name:
     description: Image name
-    value: ${{ steps.image-info.outputs.image-name }}
+    value: ${{ steps.image-info.outputs.name }}
   image-ref:
     description: Image reference
-    value: ${{ steps.image-info.outputs.image-ref }}
+    value: ${{ steps.image-info.outputs.ref }}

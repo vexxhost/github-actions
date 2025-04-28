@@ -25,9 +25,10 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: vexxhost/github-actions/nix-image@main
+        id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           push: ${{ inputs.push }}
     outputs:
-      image-name: ${{ steps.image-info.outputs.name }}
-      image-ref: ${{ steps.image-info.outputs.ref }}
+      image-name: ${{ steps.build.outputs.image-name }}
+      image-ref: ${{ steps.build.outputs.image-ref }}
