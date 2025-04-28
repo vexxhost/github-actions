@@ -3,6 +3,10 @@ name: nix-image
 on:
   workflow_call:
     inputs:
+      runs-on:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
       push:
         type: boolean
         required: false
@@ -17,7 +21,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runs-on }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
