@@ -68,7 +68,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ inputs.token }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: int128/docker-manifest-create-action@v2
         with:
           index-annotations: ${{ steps.meta.outputs.labels }}
