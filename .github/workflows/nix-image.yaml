@@ -24,26 +24,10 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@v17
+      - uses: vexxhost/github-actions/nix-image@main
         with:
-          determinate: true
-      - uses: DeterminateSystems/flakehub-cache-action@v1
-      - uses: DeterminateSystems/flake-checker-action@v9
-      - run: nix build .#dockerImage
-      # TODO: use some sort of sane tag..
-      - run: |
-          echo "name=$(nix eval --raw .#dockerImage.imageName)"
-          echo "ref=$(nix eval --raw .#dockerImage.imageRefUnsafe)"
-        id: image-info
-      - uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
-        if: ${{ inputs.push == 'true' }}
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ inputs.token }}
-      - run: nix run .#dockerImage.copyToRegistry
-        if: ${{ inputs.push == 'true' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          push: ${{ inputs.push }}
     outputs:
       image-name: ${{ steps.image-info.outputs.name }}
       image-ref: ${{ steps.image-info.outputs.ref }}
