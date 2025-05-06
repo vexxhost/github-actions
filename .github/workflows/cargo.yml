@@ -16,8 +16,12 @@ jobs:
       - uses: rui314/setup-mold@v1
       - uses: Swatinem/rust-cache@9d47c6ad4b02e050fd481d890b2ea34778fd09d6 # v2.7.8
       - run: rustup show
-      - run: sudo snap install prometheus
+      - run: |
+          curl -L -s https://github.com/prometheus/prometheus/releases/download/v${PROMTOOL_VERSION}/prometheus-${PROMTOOL_VERSION}.linux-amd64.tar.gz |\
+            sudo tar -xz -C /usr/local/bin --strip-components=1 prometheus-${PROMTOOL_VERSION}.linux-amd64/promtool
         if: ${{ inputs.install-promtool }}
+        env:
+          PROMTOOL_VERSION: 2.53.4
       - run: cargo test --workspace
 
   clippy:
