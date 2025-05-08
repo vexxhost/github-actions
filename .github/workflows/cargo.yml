@@ -9,11 +9,12 @@ on:
 
 jobs:
   test:
-    runs-on: depot-ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: rui314/setup-mold@v1
+      - uses: mozilla-actions/sccache-action@v0.0.9
       - uses: Swatinem/rust-cache@9d47c6ad4b02e050fd481d890b2ea34778fd09d6 # v2.7.8
       - run: rustup show
       - run: |
@@ -23,13 +24,20 @@ jobs:
         env:
           PROMTOOL_VERSION: 2.53.4
       - run: cargo test --workspace
+        env:
+          SCCACHE_GHA_ENABLED: "true"
+          RUSTC_WRAPPER: "sccache"
 
   clippy:
-    runs-on: depot-ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: rui314/setup-mold@v1
+      - uses: mozilla-actions/sccache-action@v0.0.9
       - uses: Swatinem/rust-cache@9d47c6ad4b02e050fd481d890b2ea34778fd09d6 # v2.7.8
       - run: rustup show
       - run: cargo clippy --workspace -- -D warnings
+        env:
+          SCCACHE_GHA_ENABLED: "true"
+          RUSTC_WRAPPER: "sccache"
