@@ -17,7 +17,7 @@ runs:
     - uses: DeterminateSystems/nix-installer-action@v17
       with:
         determinate: true
-    - uses: DeterminateSystems/flakehub-cache-action@146f476c94460cb634f9ade79470fcbc3f7e5b36 # v1
+    - uses: DeterminateSystems/flakehub-cache-action@398f9fd82f5d1a0ecd48454769649cd8cae1a5b7 # v2.2.0
     - uses: DeterminateSystems/flake-checker-action@v9
     - shell: bash
       run: nix build .#dockerImage
