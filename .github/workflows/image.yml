@@ -25,6 +25,9 @@ on:
         required: false
         default: false
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,7 +37,12 @@ jobs:
       packages: write
       security-events: write
     steps:
-      - uses: vexxhost/github-actions/build-docker-image@main
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        with:
+          egress-policy: audit
+
+      - uses: vexxhost/github-actions/build-docker-image@377e35d3a5c570338901d9e0edf48bcf86c7c9ef # main
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,6 +63,11 @@ jobs:
       contents: write
       security-events: write
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        with:
+          egress-policy: audit
+
       - uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8 # 0.33.1
         with:
           image-ref: ${{ needs.image.outputs.image_name }}
