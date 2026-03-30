@@ -61,7 +61,7 @@ runs:
       with:
         msg: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
         separator: ","
-    - uses: vexxhost/github-actions/scan-image@main
+    - uses: vexxhost/github-actions/scan-image@1792807163c61621500aaf37d61363646eede63e # main
       with:
         image-ref: ${{ steps.split.outputs._0 }}
         fail-on-vulnerability: ${{ inputs.push == 'true' && 'false' || 'true' }}
