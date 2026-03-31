@@ -27,7 +27,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: vexxhost/github-actions/nix-image@main
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        with:
+          egress-policy: audit
+
+      - uses: vexxhost/github-actions/nix-image@377e35d3a5c570338901d9e0edf48bcf86c7c9ef # main
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +45,12 @@ jobs:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     steps:
-      - uses: vexxhost/github-actions/nix-image@main
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        with:
+          egress-policy: audit
+
+      - uses: vexxhost/github-actions/nix-image@377e35d3a5c570338901d9e0edf48bcf86c7c9ef # main
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -59,12 +69,17 @@ jobs:
       id-token: write
       packages: write
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        with:
+          egress-policy: audit
+
       - uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         id: meta
         with:
           images: ${{ needs.amd64.outputs.image-name }}
           tags: ${{ inputs.tags }}
-      - uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+      - uses: step-security/docker-login-action@c3e677aae8393bc9c81cfdf9709648720ea4bd4d # v3.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
