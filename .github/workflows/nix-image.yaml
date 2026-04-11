@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: vexxhost/github-actions/nix-image@main
+      - uses: vexxhost/github-actions/nix-image@1a9b39d8b3f28736b3ad19b45cd9493a91aa2519 # main
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     steps:
-      - uses: vexxhost/github-actions/nix-image@main
+      - uses: vexxhost/github-actions/nix-image@1a9b39d8b3f28736b3ad19b45cd9493a91aa2519 # main
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
