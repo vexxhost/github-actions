@@ -34,7 +34,7 @@ jobs:
       packages: write
       security-events: write
     steps:
-      - uses: vexxhost/github-actions/build-docker-image@main
+      - uses: vexxhost/github-actions/build-docker-image@ee90fdf77bca9a1426af5073b44cae27dc0bdaca # main
         id: build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
