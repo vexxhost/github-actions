@@ -25,6 +25,8 @@ on:
         required: false
         default: false
 
+permissions: {}
+
 jobs:
   build:
     runs-on: ubuntu-latest
